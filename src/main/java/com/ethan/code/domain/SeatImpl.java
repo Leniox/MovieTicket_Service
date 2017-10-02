@@ -10,15 +10,34 @@ public class SeatImpl implements Seat{
 
     protected Customer customer;
 
-    public SeatImpl(int column, int row) {
+    protected String emailAddress;
+
+    protected int score;
+
+    public SeatImpl(int row, int column) {
         this.column = column;
         this.row = row;
     }
 
-    public SeatImpl(int column, int row, Status status) {
+    public SeatImpl(int row, int column, Status status) {
         this.status = status;
         this.column = column;
         this.row = row;
+    }
+
+    public SeatImpl(int row, int column, Status status, int score) {
+        this.status = status;
+        this.column = column;
+        this.row = row;
+        this.score = score;
+    }
+
+    public boolean isActive() {
+        return status == Status.UNBOOKED;
+    }
+
+    public void changeToHold() {
+        this.status = Status.HOLD;
     }
 
     public Status getStatus() {
@@ -51,5 +70,22 @@ public class SeatImpl implements Seat{
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public int getScore() { return score; }
+
+    public void setScore(int score) { this.score = score; }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this.score);
     }
 }

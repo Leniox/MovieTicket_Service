@@ -11,6 +11,8 @@ public class SeatHoldImpl implements SeatHold {
 
     protected Customer customer;
 
+    protected String emailAddress;
+
     protected Timestamp holdAtTime;
 
     protected boolean isExpired;
@@ -18,6 +20,11 @@ public class SeatHoldImpl implements SeatHold {
     public SeatHoldImpl(Set<Seat> holdSeats, Customer customer) {
         this.holdSeats = holdSeats;
         this.customer = customer;
+    }
+
+    public SeatHoldImpl(Set<Seat> holdSeats, String emailAddress) {
+        this.holdSeats = holdSeats;
+        this.emailAddress = emailAddress;
     }
 
     public int getSetHoldId() {
@@ -58,5 +65,13 @@ public class SeatHoldImpl implements SeatHold {
 
     public void setExpired(boolean expired) {
         isExpired = expired;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

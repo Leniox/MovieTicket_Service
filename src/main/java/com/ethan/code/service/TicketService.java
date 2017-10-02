@@ -1,6 +1,8 @@
 package com.ethan.code.service;
 
+import com.ethan.code.domain.Seat;
 import com.ethan.code.domain.SeatHold;
+import com.ethan.code.domain.Venue;
 
 public interface TicketService {
 
@@ -30,5 +32,11 @@ public interface TicketService {
      * @return a reservation confirmation code
      */
     String reserveSeats(int seatHoldId, String customerEmail);
+
+    public Seat getSeatByPosition(int row, int column);
+
+    public Venue getVenue();
+
+    public void setVenue(Venue venue);
 
 }

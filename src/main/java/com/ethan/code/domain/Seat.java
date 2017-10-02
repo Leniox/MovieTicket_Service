@@ -18,4 +18,16 @@ public interface Seat {
 
     public void setCustomer(Customer customer);
 
+    public String getEmailAddress();
+
+    public void setEmailAddress(String emailAddress);
+
+    public int getScore();
+
+    public void setScore(int score);
+
+    public boolean isActive();
+
+    public void changeToHold();
+
 }
