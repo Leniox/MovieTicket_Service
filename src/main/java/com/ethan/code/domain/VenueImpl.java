@@ -79,7 +79,17 @@ public class VenueImpl implements Venue {
 
     @Override
     public String toString() {
-        return Arrays.deepToString(seats);
+        StringBuilder sb = new StringBuilder();
+        sb.append('\n');
+        for(int i = 0; i < seats.length; i++) {
+            for(int j = 0; j < seats[0].length; j++) {
+                if (seats[i][j].getStatus() == Status.UNBOOKED) sb.append("_ ");
+                else if (seats[i][j].getStatus() == Status.HOLD) sb.append("# ");
+                else sb.append("* ");
+                if (j == seats[0].length - 1) sb.append('\n');
+            }
+        }
+        return sb.toString();
     }
 
 }

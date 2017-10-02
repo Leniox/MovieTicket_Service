@@ -30,4 +30,6 @@ public interface Seat {
 
     public void changeToHold();
 
+    public void changeToReserved();
+
 }

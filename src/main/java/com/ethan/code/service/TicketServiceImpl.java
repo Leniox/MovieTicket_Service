@@ -3,12 +3,14 @@ package com.ethan.code.service;
 import com.ethan.code.App;
 import com.ethan.code.domain.*;
 import com.google.gson.Gson;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -20,13 +22,12 @@ public class TicketServiceImpl implements TicketService {
 
     protected Set<Seat> localMaxSet;
 
+    protected List<SeatHold> seatHolds;
+
     public TicketServiceImpl() {
-        Gson gson = new Gson();
-        logger.info("in ticket service constructor");
         venue = new VenueImpl(9, 15);
         venue.initializeSeats();
-        //logger.info(gson.toJson(venue));
-        logger.info(venue);
+        seatHolds = new ArrayList<>();
     }
 
     public int numSeatsAvailable() {
@@ -39,18 +40,21 @@ public class TicketServiceImpl implements TicketService {
             throw new IllegalArgumentException("We not have enough available seats");
         }
 
-        findBestSeatsByDFS(numSeats);
+        Set<Seat> bestSeats = findBestSeatsByDFS(numSeats);
+        changeStatusToHold(bestSeats);
 
-        return null;
+        logger.info(venue);
+
+        return new SeatHoldImpl(bestSeats, customerEmail);
     }
 
     public Set<Seat> findBestSeatsByDFS(int numSeats) {
-        Gson gson = new Gson();
+
         Seat[][] seats = venue.getSeats();
         boolean[][] visited;
-        //logger.info(visited[0][0]);
+
         localMaxSet = new HashSet<>();
-        //int localMax = 0;
+
         for(int i = 0; i < seats.length; i++) {
             for(int j = 0; j < seats[0].length; j++) {
                 if (seats[i][j].isActive()) {
@@ -60,7 +64,7 @@ public class TicketServiceImpl implements TicketService {
             }
         }
         logger.info(localMaxSet + getLineNumber());
-        localMaxSet.forEach(System.out::println);
+
         return localMaxSet;
     }
 
@@ -72,7 +76,6 @@ public class TicketServiceImpl implements TicketService {
         if (set.size() == num) {
             if (localMaxSet.isEmpty() || localMaxSet.stream().mapToInt(Seat::getScore).sum() < set.stream().mapToInt(Seat::getScore).sum()) {
                 localMaxSet = new HashSet<>(set);
-                logger.info(localMaxSet + getLineNumber());
             }
             return;
         }
@@ -98,29 +101,36 @@ public class TicketServiceImpl implements TicketService {
             visited[row][column+1] = false;
         }
 
-        //visited[row][column] = false;
-
-//        set.remove(seats[row][column]);
-
     }
 
-    public SeatHold holdOneSpecificSeat(int row, int column, String customerEmail) {
-        Seat seat = getSeatByPosition(row, column);
-        seat.setEmailAddress(customerEmail);
-        Set<Seat> holdSet = new HashSet<>();
-        holdSet.add(seat);
-        changeStatusToHold(holdSet);
-//        SeatHold seatHold = new SeatHoldImpl(holdSet, customerEmail);
-        return new SeatHoldImpl(holdSet, customerEmail);
-    }
 
     public String reserveSeats(int seatHoldId, String customerEmail) {
-        return null;
+
+        Optional<SeatHold> seatHold = seatHolds.stream().filter(e -> e.getSetHoldId() == seatHoldId).findFirst();
+
+        String confirmCode;
+
+        if (seatHold.isPresent() && !seatHold.get().isCommitted()) {
+            if(seatHold.get().getEmailAddress() == customerEmail) {
+                if (!seatHold.get().isExpired()) {
+                    changeStatusToReserved(seatHold.get().getHoldSeats());
+                    confirmCode = RandomStringUtils.random(8, true, true);
+                    seatHold.get().setConfirmCode(confirmCode);
+                } else {
+                    throw new RuntimeException("You hold for the seats have expired");
+                }
+            } else {
+                throw new IllegalArgumentException("The email address to reserve ticket doesn't match the email address used to hold the seats");
+            }
+        } else {
+            throw new IllegalArgumentException("There's no hold for seats match the id");
+        }
+
+        logger.info(venue);
+
+        return confirmCode;
     }
 
-    public Seat getSeatByPosition(int row, int column) {
-        return venue.getSeats()[row][column];
-    }
 
     public void changeStatusToHold(Set<Seat> set) {
         if (set == null || set.isEmpty()) return;
@@ -129,9 +139,20 @@ public class TicketServiceImpl implements TicketService {
         }
     }
 
+    public void changeStatusToReserved(Set<Seat> set) {
+        if (set == null || set.isEmpty()) return;
+        else {
+            set.forEach(Seat::changeToReserved);
+        }
+    }
+
     public Venue getVenue() { return venue; }
 
     public void setVenue(Venue venue) { this.venue = venue; }
+
+    public List<SeatHold> getSeatHolds() { return seatHolds; }
+
+    public void setSeatHolds(List<SeatHold> seatHolds) { this.seatHolds = seatHolds; }
 
     public static String getLineNumber() {
         return "Line Number " + String.valueOf(Thread.currentThread().getStackTrace()[2].getLineNumber());

@@ -13,10 +13,4 @@ public class AppConfig {
         return new TicketServiceImpl();
     }
 
-    @Bean(name="customerService")
-    public CustomerService getCustomerService() {
-        return new CustomerServiceImpl();
-    }
-
-
 }

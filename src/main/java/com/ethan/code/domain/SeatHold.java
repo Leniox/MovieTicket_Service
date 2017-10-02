@@ -23,5 +23,17 @@ public interface SeatHold {
 
     public boolean isExpired();
 
-    public void setExpired(boolean expired);
+    public long getExpiresMS();
+
+    public void setExpiresMS(long expiresMS);
+
+    public String getEmailAddress();
+
+    public void setEmailAddress(String emailAddress);
+
+    public String getConfirmCode();
+
+    public void setConfirmCode(String confirmCode);
+
+    public boolean isCommitted();
 }

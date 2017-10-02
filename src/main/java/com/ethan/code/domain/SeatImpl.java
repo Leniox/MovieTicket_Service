@@ -40,6 +40,10 @@ public class SeatImpl implements Seat{
         this.status = Status.HOLD;
     }
 
+    public void changeToReserved() {
+        this.status = Status.RESERVED;
+    }
+
     public Status getStatus() {
         return status;
     }

@@ -4,6 +4,8 @@ import com.ethan.code.domain.Seat;
 import com.ethan.code.domain.SeatHold;
 import com.ethan.code.domain.Venue;
 
+import java.util.List;
+
 public interface TicketService {
 
     /**
@@ -33,10 +35,12 @@ public interface TicketService {
      */
     String reserveSeats(int seatHoldId, String customerEmail);
 
-    public Seat getSeatByPosition(int row, int column);
-
     public Venue getVenue();
 
     public void setVenue(Venue venue);
+
+    public List<SeatHold> getSeatHolds();
+
+    public void setSeatHolds(List<SeatHold> seatHolds);
 
 }

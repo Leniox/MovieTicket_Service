@@ -33,22 +33,49 @@ public class App {
         ticketService = (TicketServiceImpl) context.getBean("ticketService");
         ticketService.numSeatsAvailable();
 
-        ticketService.findAndHoldSeats(7, "waldenlaker@gmail.com");
+        ticketService.getSeatHolds().add(ticketService.findAndHoldSeats(5, "waldenlaker@gmail.com"));
+
+        ticketService.getSeatHolds().add(ticketService.findAndHoldSeats(3, "waldenlaker@gmail.com"));
+
+        ticketService.getSeatHolds().add(ticketService.findAndHoldSeats(1, "waldenlaker@gmail.com"));
+
+        try{
+            ticketService.reserveSeats(0, "waldenlaker@gmail.com");
+
+        } catch (IllegalArgumentException e) {
+            logger.catching(e);
+        } catch (Exception e) {
+            logger.catching(e);
+        }
+
+        try{
+            ticketService.reserveSeats(4, "waldenlaker@gmail.com");
+
+        } catch (IllegalArgumentException e) {
+            logger.catching(e);
+        } catch (Exception e) {
+            logger.catching(e);
+        }
+
+        try{
+            ticketService.reserveSeats(2, "test@gmail.com");
+        } catch (IllegalArgumentException e) {
+            logger.catching(e);
+        } catch (Exception e) {
+            logger.catching(e);
+        }
+
+        try{
+            Thread.sleep(2000);
+            ticketService.reserveSeats(2, "waldenlaker@gmail.com");
+        } catch (IllegalArgumentException e) {
+            logger.catching(e);
+        } catch (Exception e) {
+            logger.catching(e);
+        }
 
 
-        //Gson gson = new Gson();
-
-//        ticketService = new TicketServiceImpl();
-//
-
-//        System.out.println( "Hello World!" );
         logger.info("Hello World");
-
-//        Venue venue = new VenueImpl(16, 8);
-//        venue.initializeSeats();
-//        ticketService.numSeatsAvailable();
-
-//        logger.info(gson.toJson(venue));
 
     }
 

@@ -1,9 +1,17 @@
 package com.ethan.code.domain;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Timestamp;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SeatHoldImpl implements SeatHold {
+
+    private static final Logger logger = LogManager.getLogger(SeatHoldImpl.class);
+
+    private static AtomicInteger uniqueId = new AtomicInteger();
 
     protected int setHoldId;
 
@@ -15,16 +23,21 @@ public class SeatHoldImpl implements SeatHold {
 
     protected Timestamp holdAtTime;
 
-    protected boolean isExpired;
+    protected String confirmCode;
 
-    public SeatHoldImpl(Set<Seat> holdSeats, Customer customer) {
-        this.holdSeats = holdSeats;
-        this.customer = customer;
-    }
+    protected long expiresMS;
 
     public SeatHoldImpl(Set<Seat> holdSeats, String emailAddress) {
         this.holdSeats = holdSeats;
         this.emailAddress = emailAddress;
+        this.setHoldId = uniqueId.getAndIncrement();
+        this.expiresMS = System.currentTimeMillis() + 1 * 1000;
+        logger.info(this);
+        logger.info(this.setHoldId);
+    }
+
+    public boolean isCommitted() {
+        return this.confirmCode != null && !this.confirmCode.isEmpty();
     }
 
     public int getSetHoldId() {
@@ -60,18 +73,18 @@ public class SeatHoldImpl implements SeatHold {
     }
 
     public boolean isExpired() {
-        return isExpired;
+        return System.currentTimeMillis() >= this.expiresMS;
     }
 
-    public void setExpired(boolean expired) {
-        isExpired = expired;
-    }
+    public String getEmailAddress() { return emailAddress; }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+    public void setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+    public String getConfirmCode() { return confirmCode; }
+
+    public void setConfirmCode(String confirmCode) { this.confirmCode = confirmCode; }
+
+    public long getExpiresMS() { return expiresMS; }
+
+    public void setExpiresMS(long expiresMS) { this.expiresMS = expiresMS; }
 }
