@@ -1,26 +1,22 @@
 package com.ethan.code.domain;
 
-import com.ethan.code.service.TicketServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Arrays;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
 
 public class VenueImpl implements Venue {
 
     private static final Logger logger = LogManager.getLogger(VenueImpl.class);
+
+    protected Seat[][] seats;
 
     public VenueImpl(int rowNum, int colNum) {
         System.out.println("creating a new Venue");
         seats = new Seat[rowNum][colNum];
     }
 
-    protected Seat[][] seats;
-
     public void initializeSeats() {
-//        Stream.of(seats).flatMap(Stream::of).forEach(System.out::println);
         IntStream.range(0, seats.length)
                  .forEach( x -> IntStream.range(0, seats[0].length)
                     .forEach( y -> {
@@ -28,7 +24,7 @@ public class VenueImpl implements Venue {
                     }));
     }
 
-    public int getSeatScore(int rowNum, int colNum) {
+    private int getSeatScore(int rowNum, int colNum) {
         int rowL = seats.length / 2;
         int colL = seats[0].length / 2;
         int rowScore = 0, colScore = 0;

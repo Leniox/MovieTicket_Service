@@ -2,10 +2,12 @@ package com.ethan.code.domain;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class SeatHoldImpl implements SeatHold {
 
@@ -17,22 +19,17 @@ public class SeatHoldImpl implements SeatHold {
 
     protected Set<Seat> holdSeats;
 
-    protected Customer customer;
-
     protected String emailAddress;
-
-    protected Timestamp holdAtTime;
 
     protected String confirmCode;
 
     protected long expiresMS;
 
-    public SeatHoldImpl(Set<Seat> holdSeats, String emailAddress) {
+    public SeatHoldImpl(Set<Seat> holdSeats, String emailAddress, int expiresSec) {
         this.holdSeats = holdSeats;
         this.emailAddress = emailAddress;
         this.setHoldId = uniqueId.getAndIncrement();
-        this.expiresMS = System.currentTimeMillis() + 1 * 1000;
-        logger.info(this);
+        this.expiresMS = System.currentTimeMillis() + expiresSec * 1000;
         logger.info(this.setHoldId);
     }
 
@@ -54,22 +51,6 @@ public class SeatHoldImpl implements SeatHold {
 
     public void setHoldSeats(Set<Seat> holdSeats) {
         this.holdSeats = holdSeats;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Timestamp getHoldAtTime() {
-        return holdAtTime;
-    }
-
-    public void setHoldAtTime(Timestamp holdAtTime) {
-        this.holdAtTime = holdAtTime;
     }
 
     public boolean isExpired() {

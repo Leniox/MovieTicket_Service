@@ -1,15 +1,14 @@
 package com.ethan.code.service;
 
-import com.ethan.code.App;
+
 import com.ethan.code.domain.*;
-import com.google.gson.Gson;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -18,14 +17,20 @@ public class TicketServiceImpl implements TicketService {
 
     private static final Logger logger = LogManager.getLogger(TicketServiceImpl.class);
 
+    @Autowired
+    protected UtilService utilService;
+
     protected Venue venue;
 
     protected Set<Seat> localMaxSet;
 
+    /**
+     * use a list to hold all SeatHold objects since there's no database
+     */
     protected List<SeatHold> seatHolds;
 
-    public TicketServiceImpl() {
-        venue = new VenueImpl(9, 15);
+    public TicketServiceImpl(int rowNum, int columnNum) {
+        venue = new VenueImpl(rowNum, columnNum);
         venue.initializeSeats();
         seatHolds = new ArrayList<>();
     }
@@ -41,14 +46,34 @@ public class TicketServiceImpl implements TicketService {
         }
 
         Set<Seat> bestSeats = findBestSeatsByDFS(numSeats);
-        changeStatusToHold(bestSeats);
+        utilService.changeStatusToHold(bestSeats);
 
         logger.info(venue);
 
-        return new SeatHoldImpl(bestSeats, customerEmail);
+        return new SeatHoldImpl(bestSeats, customerEmail, utilService.getExpireSec());
     }
 
-    public Set<Seat> findBestSeatsByDFS(int numSeats) {
+    public SeatHold holdSeatByPosition(int x, int y, String customerEmail) {
+        if (numSeatsAvailable() == 0) {
+            throw new IllegalArgumentException("We not have enough available seats");
+        }
+
+        Seat seat = venue.getSeats()[x][y];
+
+        if (!seat.isActive()) {
+            throw new IllegalArgumentException("The seat is not available");
+        }
+
+        Set<Seat> set = new HashSet<>();
+        set.add(seat);
+        utilService.changeStatusToHold(set);
+
+        logger.info(venue);
+
+        return new SeatHoldImpl(set, customerEmail, utilService.getExpireSec());
+    }
+
+    private Set<Seat> findBestSeatsByDFS(int numSeats) {
 
         Seat[][] seats = venue.getSeats();
         boolean[][] visited;
@@ -113,7 +138,7 @@ public class TicketServiceImpl implements TicketService {
         if (seatHold.isPresent() && !seatHold.get().isCommitted()) {
             if(seatHold.get().getEmailAddress() == customerEmail) {
                 if (!seatHold.get().isExpired()) {
-                    changeStatusToReserved(seatHold.get().getHoldSeats());
+                    utilService.changeStatusToReserved(seatHold.get().getHoldSeats());
                     confirmCode = RandomStringUtils.random(8, true, true);
                     seatHold.get().setConfirmCode(confirmCode);
                 } else {
@@ -129,21 +154,6 @@ public class TicketServiceImpl implements TicketService {
         logger.info(venue);
 
         return confirmCode;
-    }
-
-
-    public void changeStatusToHold(Set<Seat> set) {
-        if (set == null || set.isEmpty()) return;
-        else {
-            set.forEach(Seat::changeToHold);
-        }
-    }
-
-    public void changeStatusToReserved(Set<Seat> set) {
-        if (set == null || set.isEmpty()) return;
-        else {
-            set.forEach(Seat::changeToReserved);
-        }
     }
 
     public Venue getVenue() { return venue; }

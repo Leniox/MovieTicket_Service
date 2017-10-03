@@ -14,10 +14,6 @@ public interface Seat {
 
     public void setRow(int row);
 
-    public Customer getCustomer();
-
-    public void setCustomer(Customer customer);
-
     public String getEmailAddress();
 
     public void setEmailAddress(String emailAddress);

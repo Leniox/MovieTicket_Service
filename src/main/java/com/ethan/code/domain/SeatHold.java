@@ -13,14 +13,6 @@ public interface SeatHold {
 
     public void setHoldSeats(Set<Seat> holdSeats);
 
-    public Customer getCustomer();
-
-    public void setCustomer(Customer customer);
-
-    public Timestamp getHoldAtTime();
-
-    public void setHoldAtTime(Timestamp holdAtTime);
-
     public boolean isExpired();
 
     public long getExpiresMS();

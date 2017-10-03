@@ -35,6 +35,8 @@ public interface TicketService {
      */
     String reserveSeats(int seatHoldId, String customerEmail);
 
+    public SeatHold holdSeatByPosition(int x, int y, String customerEmail);
+
     public Venue getVenue();
 
     public void setVenue(Venue venue);

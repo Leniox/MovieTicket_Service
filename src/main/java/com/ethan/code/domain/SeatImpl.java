@@ -8,22 +8,9 @@ public class SeatImpl implements Seat{
 
     protected int row;
 
-    protected Customer customer;
-
     protected String emailAddress;
 
     protected int score;
-
-    public SeatImpl(int row, int column) {
-        this.column = column;
-        this.row = row;
-    }
-
-    public SeatImpl(int row, int column, Status status) {
-        this.status = status;
-        this.column = column;
-        this.row = row;
-    }
 
     public SeatImpl(int row, int column, Status status, int score) {
         this.status = status;
@@ -33,14 +20,17 @@ public class SeatImpl implements Seat{
     }
 
     public boolean isActive() {
+
         return status == Status.UNBOOKED;
     }
 
     public void changeToHold() {
+
         this.status = Status.HOLD;
     }
 
     public void changeToReserved() {
+
         this.status = Status.RESERVED;
     }
 
@@ -66,14 +56,6 @@ public class SeatImpl implements Seat{
 
     public void setRow(int row) {
         this.row = row;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public String getEmailAddress() {
