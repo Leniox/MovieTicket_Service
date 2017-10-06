@@ -14,6 +14,10 @@ public class UtilServiceImpl implements UtilService {
 
     protected int expireSec;
 
+    /**
+     * util function to change the status of all seats in the set to Hold
+     * @param set
+     */
     public void changeStatusToHold(Set<Seat> set) {
         if (set == null || set.isEmpty()) return;
         else {
@@ -21,6 +25,10 @@ public class UtilServiceImpl implements UtilService {
         }
     }
 
+    /**
+     * util function to change the status of all seats in the set to Reserved
+     * @param set
+     */
     public void changeStatusToReserved(Set<Seat> set) {
         if (set == null || set.isEmpty()) return;
         else {

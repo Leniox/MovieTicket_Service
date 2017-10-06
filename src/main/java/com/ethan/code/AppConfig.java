@@ -22,12 +22,14 @@ public class AppConfig {
     @Bean(name="utilService")
     public UtilService getUtilService() {
         UtilService utilService = new UtilServiceImpl();
+        //set the expire time from the property file
         utilService.setExpireSec(Integer.valueOf(env.getProperty("expiration")));
         return utilService;
     }
 
     @Bean(name="ticketService")
     public TicketService getTicketService() {
+        //read column number and row number from property file
         int rowNum = Integer.valueOf(env.getProperty("rowNum"));
         int columnNum = Integer.valueOf(env.getProperty("columnNum"));
         TicketService ticketService = new TicketServiceImpl(rowNum, columnNum);

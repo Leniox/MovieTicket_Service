@@ -1,8 +1,11 @@
-# Spring Boot "Microservice" Example Project
+# Coding Challenge Project For Walmart -- A Ticketing Service
 
-This is a sample Java / Maven / Spring Boot (version 1.5.6) application that can be used as a starter for creating a microservice complete with built-in health check, metrics and much more. I hope it helps you.
+This is a sample Java / Maven / Spring application for Walmart coding challenge  
 
 ## How to Run 
+
+```bash
+# clone the repo
 
 This application is packaged as a war which has Tomcat 8 embedded. No Tomcat or JBoss installation is necessary. You run it using the ```java -jar``` command.
 

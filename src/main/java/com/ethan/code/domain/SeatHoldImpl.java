@@ -8,11 +8,11 @@ import java.sql.Timestamp;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 public class SeatHoldImpl implements SeatHold {
 
     private static final Logger logger = LogManager.getLogger(SeatHoldImpl.class);
 
+    //use AtomicInteger to make sure the ID is unique
     private static AtomicInteger uniqueId = new AtomicInteger();
 
     protected int setHoldId;
@@ -29,8 +29,8 @@ public class SeatHoldImpl implements SeatHold {
         this.holdSeats = holdSeats;
         this.emailAddress = emailAddress;
         this.setHoldId = uniqueId.getAndIncrement();
+        //set the expire time
         this.expiresMS = System.currentTimeMillis() + expiresSec * 1000;
-        logger.info(this.setHoldId);
     }
 
     public boolean isCommitted() {

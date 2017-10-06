@@ -27,6 +27,8 @@ public class App {
         ticketService = (TicketServiceImpl) context.getBean("ticketService");
         ticketService.numSeatsAvailable();
 
+        logger.info(ticketService.getVenue().printSeatsScore());
+
         ticketService.holdSeatByPosition(4,7, "waldenlaker@gmail.com");
 
         ticketService.holdSeatByPosition(4,8, "waldenlaker@gmail.com");
@@ -35,11 +37,11 @@ public class App {
 
         ticketService.holdSeatByPosition(4,9, "waldenlaker@gmail.com");
 
-        ticketService.getSeatHolds().add(ticketService.findAndHoldSeats(5, "waldenlaker@gmail.com"));
+        ticketService.findAndHoldSeats(5, "waldenlaker@gmail.com");
 
-        ticketService.getSeatHolds().add(ticketService.findAndHoldSeats(3, "waldenlaker@gmail.com"));
+        ticketService.findAndHoldSeats(3, "waldenlaker@gmail.com");
 
-        ticketService.getSeatHolds().add(ticketService.findAndHoldSeats(1, "waldenlaker@gmail.com"));
+        ticketService.findAndHoldSeats(1, "waldenlaker@gmail.com");
 
         try{
             ticketService.reserveSeats(0, "waldenlaker@gmail.com");
@@ -75,10 +77,6 @@ public class App {
         } catch (Exception e) {
             logger.catching(e);
         }
-
-        logger.info(ticketService.numSeatsAvailable());
-
-        logger.info("Hello World");
 
     }
 

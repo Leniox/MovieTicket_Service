@@ -11,4 +11,6 @@ public interface Venue {
     public Seat[][] getSeats();
 
     public void setSeats(Seat[][] seats);
+
+    public String printSeatsScore();
 }
