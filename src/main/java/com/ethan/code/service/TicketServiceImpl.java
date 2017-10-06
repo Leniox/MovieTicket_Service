@@ -58,7 +58,7 @@ public class TicketServiceImpl implements TicketService {
      * Previous, I designed the score system for the seat, so each seat have a score. To find the best group of seats,
      * I use some common sense again. Because we always want to seat with your family or friends, so the best group of seats
      * should adjacent to each other.
-     * With this assumption, the problem now it to find adjacent seats with highest total score with in available seats.
+     * With this assumption, the problem now is to find adjacent seats with highest total score with in available seats.
      * I solve the problem using DFS.
      * @param numSeats the number of seats to find and hold
      * @param customerEmail unique identifier for the customer
