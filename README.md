@@ -6,7 +6,9 @@ This is a Java / Maven / Spring application for Walmart coding challenge
 * The application use a property file as arguments for number of rows, columns and seat hold expiration time.
   The unit test is based on the default property file, change of property file may lead to the failure of unit testing.
   But you are welcomed to play around with the property file when run the application with mvn exec:java. 
-
+* The change of calculation of weighted average in **private int getSeatScore(int rowNum, int colNum)** will also lead to
+  the failure of unit testing. But you are welcomed to play around with the weighted average, the algorithm will always
+  give you the best seats on top of the current weighted average calculation.
 
 ## How to Run 
 
