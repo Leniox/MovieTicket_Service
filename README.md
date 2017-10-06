@@ -1,11 +1,11 @@
 # Coding Challenge Project For Walmart -- A Ticketing Service
 
-This is a sample Java / Maven / Spring application for Walmart coding challenge  
+This is a Java / Maven / Spring application for Walmart coding challenge  
 
 * Make sure you are using JDK 1.8 and Maven 3.x
 * The application use a property file as arguments for number of rows, columns and seat hold expiration time.
-  The unit test is based ont the default property file, change of property file may lead to the failure of unit testing.
-  But we are welcome to play around with the property file when run the application. 
+  The unit test is based on the default property file, change of property file may lead to the failure of unit testing.
+  But you are welcomed to play around with the property file when run the application with mvn exec:java. 
 
 
 ## How to Run 
@@ -37,11 +37,11 @@ $ mvn exec:java
 Here is a list of core assumptions and ideas that I used to implement the project
 
 * the findAndHoldSeats() in TicketService needs to find best seats, but how do we define best?
-  Based on our common sense when watch a movie, the seats in the center of the venue are usually the best seat.
-  So I use a rate score system for all the seats. The seat in the center will be rated as 100 and the seat in four corners
+  Based on our common sense when watch a movie, the seat in the center of the venue are usually the best seat.
+  So I use a rating system for all the seats. The seat in the center will be rated as 100 and the seats in four corners
   will be rated as 0. The score changes linearly from center to edge. 
-  I also give the row higher weight than column, because people prefer site in the middle row instead of middle column is there is
-  only we choose. So that's the reason why you see (rowScore * 2 + colScore * 1) / 3 at the end.
+  I also give the row higher weight than column, because people prefer sit in the middle row instead of middle column if
+  they can only choose one. So that's the reason why you see (rowScore * 2 + colScore * 1) / 3 at the end of that method.
   
  ```
   So based on this algorithm, a 9 * 17 venue will be rated like:
