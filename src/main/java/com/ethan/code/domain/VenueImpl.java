@@ -33,6 +33,8 @@ public class VenueImpl implements Venue {
      * Based on our common sense when watch a movie, the seats in the center of the venue are usually the best seat.
      * So I use a rate score system for all the seats. The seat in the center will be rated as 100 and the seat in four corners
      * will be rated as 0. The score changes linearly from center to edge.
+     * I also give the row higher weight than column, because people prefer site in the middle row instead of middle column is there is
+     * only we choose. So that's the reason why you see (rowScore * 2 + colScore * 1) / 3 at the end.
      * So based on this algorithm, a 9 * 17 venue will be rated like:
      *   0  4  8  12 16 20 24 28 32 28 24 20 16 12  8  4  0
          16 20 24 28 32 36 40 44 48 44 40 36 32 28 24 20 16
