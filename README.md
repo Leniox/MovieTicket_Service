@@ -1,6 +1,6 @@
-# Coding Challenge Project For Walmart -- A Ticketing Service
+# Coding Challenge Project -- A Ticketing Service
 
-This is a Java / Maven / Spring application for Walmart coding challenge  
+This is a Java / Maven / Spring application 
 
 * Make sure you are using JDK 1.8 and Maven 3.x
 * The application use a property file as arguments for number of rows, columns and seat hold expiration time.
