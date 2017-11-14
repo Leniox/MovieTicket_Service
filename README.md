@@ -1,4 +1,4 @@
-# Coding Challenge Project -- A Ticketing Service
+# A Movie Ticketing Service
 
 This is a Java / Maven / Spring application 
 
